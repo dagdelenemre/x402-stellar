@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "x402-stellar"
+version = "0.1.0"
+description = "x402 payments on Stellar for Python: pay from agents, charge from FastAPI, verify and settle yourself."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Emre Kadir Dağdelen" }]
+dependencies = [
+    "stellar-sdk>=13",
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+server = ["starlette>=0.37", "fastapi>=0.110"]
+sdk = ["x402>=2.26,<3"]
+demo = ["fastapi>=0.110", "uvicorn>=0.29"]
+dev = ["pytest>=8", "fastapi>=0.110", "uvicorn>=0.29", "x402>=2.26,<3"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
