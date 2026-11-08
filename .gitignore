@@ -4,5 +4,7 @@ __pycache__/
 .pytest_cache/
 .coverage
 htmlcov/
+dist/
+build/
 # Testnet secret keys created by the examples
 examples/testnet_accounts.json

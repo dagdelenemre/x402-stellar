@@ -1,6 +1,6 @@
 # Nasıl çalıştırılır (Windows)
 
-Bu rehber demoyu kendi bilgisayarında, Stellar testnet üzerinde çalıştırman için. Testnet sahte para kullanır; hiçbir şey kaybetmezsin.
+Bu rehber, demoyu kendi bilgisayarında Stellar testnet üzerinde çalıştırman için. Testnet sahte para kullanır; hiçbir şey kaybetmezsin.
 
 ## 1. Python kurulu mu?
 
@@ -14,8 +14,10 @@ py --version
 
 ## 2. Kurulum (bir kere)
 
+Repoyu indirdiğin klasöre geç ve şunları yaz:
+
 ```powershell
-cd C:\stellar\x402-stellar
+cd x402-stellar
 py -m venv .venv
 .venv\Scripts\activate
 pip install -e ".[demo,dev]"
@@ -27,7 +29,7 @@ pip install -e ".[demo,dev]"
 pytest
 ```
 
-`40 passed` görmelisin.
+Bütün testlerin geçtiğini (`passed`) görmelisin.
 
 ## 4. Testnet demosu
 
@@ -37,13 +39,20 @@ python examples\demo.py
 
 Ne olur:
 
-1. İlk çalıştırmada 3 testnet hesabı açılır ve Friendbot hepsine sahte XLM yükler. Hesaplar `examples\testnet_accounts.json` dosyasına kaydedilir. **Bu dosyayı GitHub'a yükleme** (`.gitignore` zaten engelliyor).
+1. İlk çalıştırmada 3 testnet hesabı açılır ve Friendbot hepsine sahte XLM yükler. Hesaplar `examples\testnet_accounts.json` dosyasına kaydedilir. Bu dosya gizli anahtarlar içerir; **paylaşma ve GitHub'a yükleme** (`.gitignore` zaten engelliyor).
 2. `http://127.0.0.1:8402/weather` adresinde ücretli bir API açılır (her çağrı 0.1 XLM).
 3. "Ajan" API'yi çağırır, 402 alır, ödemeyi imzalar, tekrar dener ve veriyi alır.
-4. Ekrana yanıt, işlemin stellar.expert linki ve bakiyeler basılır.
+4. Ekrana yanıt, işlemin stellar.expert linki ve bakiyeler yazılır.
 
-Linke tıklayınca işlemi Stellar'ın kendi blok gezgininde görürsün. Bu, Instaward için en güçlü kanıtın: ekran kaydını al.
+Linke tıklayınca işlemi Stellar'ın blok gezgininde görürsün.
+
+Aynı akışı resmi x402 Python SDK'sıyla görmek için:
+
+```powershell
+pip install -e ".[sdk]"
+python examples\sdk_demo.py
+```
 
 ## Bir şey ters giderse
 
-Bu kod bulutta, ağa bağlanmadan, Stellar'ı taklit eden bir test ağıyla doğrulandı. Gerçek testnet'te ilk kez çalışacak. Hata alırsan çıktının tamamını kopyalayıp bana gönder, düzeltelim.
+Hata alırsan çıktının tamamını bir GitHub issue'su olarak paylaş. Testnet bazen yoğun olur; ödeme 5-15 saniye sürebilir.

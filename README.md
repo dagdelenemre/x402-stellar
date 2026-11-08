@@ -2,7 +2,7 @@
 
 x402 payments on Stellar for Python.
 
-[x402](https://x402.org) turns HTTP `402 Payment Required` into a real payment flow, so APIs can charge per request and AI agents can pay without accounts or API keys. Stellar supports x402 in the official TypeScript SDK (`@x402/stellar`), but the official Python SDK only ships EVM, Solana and TON. Most agents are written in Python. This package fills that gap.
+[x402](https://x402.org) turns HTTP `402 Payment Required` into a real payment flow, so APIs can charge per request and AI agents can pay without accounts or API keys. Stellar supports x402 in the official TypeScript SDK (`@x402/stellar`), but the official Python SDK only ships EVM, Solana and TON, and many agent frameworks are Python. This package fills that gap.
 
 - **Pay** from any Python script or agent: `X402Client` handles the 402, signs, retries.
 - **Charge** from FastAPI/Starlette: `PaymentMiddleware` puts a price on routes.
@@ -10,13 +10,17 @@ x402 payments on Stellar for Python.
 
 It implements the [`exact` scheme on Stellar](https://github.com/x402-foundation/x402/blob/main/specs/schemes/exact/scheme_exact_stellar.md) (x402 v2): the client signs only a Soroban authorization entry for `transfer(from, to, amount)` on a SEP-41 token, and the facilitator pays the network fee.
 
-> **Status: prototype, testnet.** Self-reviewed ([SECURITY.md](SECURITY.md)), not audited. Do not use with real funds yet.
+> **Status: early release (0.1), testnet.** Self-reviewed ([SECURITY.md](https://github.com/dagdelenemre/x402-stellar/blob/main/SECURITY.md)), not audited. Do not use with real funds yet.
 
 ## Install
 
 ```bash
-pip install -e ".[demo]"     # from a checkout; adds FastAPI + uvicorn for the examples
+pip install x402-stellar             # pay with an agent, run a facilitator
+pip install "x402-stellar[server]"   # + FastAPI/Starlette payment middleware
+pip install "x402-stellar[sdk]"      # + adapter for the official x402 Python SDK
 ```
+
+From a checkout, for the examples and tests: `pip install -e ".[demo,dev]"`.
 
 ## Pay for something (agent side)
 
@@ -69,14 +73,14 @@ facilitator = ExactStellarFacilitator(
 app = create_facilitator_app(facilitator, api_key="...")  # serves /verify, /settle, /supported
 ```
 
-The facilitator pays every settlement's network fee: give it an `api_key` (or keep it on localhost) and an `assets` list. See [SECURITY.md](SECURITY.md).
+The facilitator pays every settlement's network fee: give it an `api_key` (or keep it on localhost) and an `assets` list. See [SECURITY.md](https://github.com/dagdelenemre/x402-stellar/blob/main/SECURITY.md).
 
 ## Use it with the official x402 Python SDK
 
 Already on `pip install x402`? Stellar plugs in the same way the built-in EVM/SVM/TVM mechanisms do:
 
 ```bash
-pip install -e ".[sdk]"
+pip install "x402-stellar[sdk]"
 ```
 
 ```python
@@ -128,7 +132,7 @@ Creates three Friendbot-funded accounts (agent, seller, facilitator), starts a p
 pip install -e ".[dev]" && pytest
 ```
 
-65 tests run against an in-memory Soroban RPC that checks ed25519 signatures on auth entries, covering the happy path, each attack the spec guards against, the official x402 SDK integration end to end, and regression tests for the security review ([SECURITY.md](SECURITY.md)).
+65 tests run against an in-memory Soroban RPC that checks ed25519 signatures on auth entries, covering the happy path, each attack the spec guards against, the official x402 SDK integration end to end, and regression tests for the security review ([SECURITY.md](https://github.com/dagdelenemre/x402-stellar/blob/main/SECURITY.md)).
 
 ## Roadmap
 

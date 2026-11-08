@@ -76,4 +76,5 @@ with the same reason codes as `@x402/stellar`; see `tests/test_verify.py` for on
 
 ## Reporting
 
-Please report issues privately to the maintainer rather than in a public issue.
+Please report issues privately through GitHub's private vulnerability reporting
+(**Security** tab → **Report a vulnerability**) rather than in a public issue.
