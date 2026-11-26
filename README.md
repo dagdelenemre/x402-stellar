@@ -126,6 +126,19 @@ Creates three Friendbot-funded accounts (agent, seller, facilitator), starts a p
 
 `python examples/sdk_demo.py` does the same on port 8403 using the official x402 SDK's facilitator, resource server, FastAPI middleware and httpx client.
 
+The [Testnet demo](.github/workflows/testnet-demo.yml) workflow runs both demos on GitHub Actions with fresh accounts and lists the settled transactions in the run summary. Start it from the Actions tab to get a new one.
+
+### On-chain proof (testnet)
+
+Settled by the demos above on GitHub Actions (26 Nov 2026), verifiable on stellar.expert. In both, the agent paid 0.1 XLM and the facilitator paid the network fee:
+
+| Flow | Transaction |
+|---|---|
+| Standalone (`examples/demo.py`): `X402Client` → `PaymentMiddleware` → `ExactStellarFacilitator` | [`a60fbabf…d1f7fe`](https://stellar.expert/explorer/testnet/tx/a60fbabf235b33a7b2c6fe36b79e318400d4456317b7bd5e01fb5a7880d1f7fe) |
+| Official x402 Python SDK (`examples/sdk_demo.py`) with the Stellar scheme from this package | [`f879ab16…f43fe2`](https://stellar.expert/explorer/testnet/tx/f879ab16c5d0534f2d5066888dea696be04a511ec55212c68f6a834713f43fe2) |
+
+Testnet is reset from time to time, which removes old transactions; rerun the workflow for fresh ones.
+
 ## Tests
 
 ```bash
@@ -133,6 +146,16 @@ pip install -e ".[dev]" && pytest
 ```
 
 65 tests run against an in-memory Soroban RPC that checks ed25519 signatures on auth entries, covering the happy path, each attack the spec guards against, the official x402 SDK integration end to end, and regression tests for the security review ([SECURITY.md](https://github.com/dagdelenemre/x402-stellar/blob/main/SECURITY.md)).
+
+## How it compares
+
+| | x402-stellar | Official x402 Python SDK | Python middleware in [x402-mcp-stellar-template](https://github.com/ffarinas/x402-mcp-stellar-template) |
+|---|---|---|---|
+| Stellar support | yes | no (EVM, Solana, TON, Cardano) | yes |
+| Pay from Python (agent side) | yes | n/a for Stellar | no (agent side is a Node MCP server) |
+| Charge from FastAPI/Starlette | yes | n/a for Stellar | yes |
+| Verify and settle without a hosted facilitator | yes (`ExactStellarFacilitator`) | n/a for Stellar | no (uses the OpenZeppelin facilitator) |
+| Works as a scheme inside the official SDK | yes (`x402_stellar.sdk`) | n/a | no |
 
 ## Roadmap
 
